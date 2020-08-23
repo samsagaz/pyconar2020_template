@@ -1,0 +1,768 @@
+{% load staticfiles %}
+{% load filters %}
+{% load i18n %}
+{% load l10n %}
+{% load cropping %}
+{% load account %}
+
+{% user_display user as user_display %}
+<!DOCTYPE html>
+<html lang="es-AR">
+
+<head>
+    {% block head %}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% if event is not None %}
+    <meta name="description" content="EventoL - {{ event.name }}. Event Management Software">
+    <title>EventoL - {{ event.name }}</title>
+    {% else %}
+    <meta name="description" content="Event Management Software">
+    <title>EventoL</title>
+    {% endif %}
+
+    <link rel="shortcut icon" type="image/png" href="{% static "favicon.ico" %}" />
+    <link rel="stylesheet" type="text/css" media="all" href="{% static "manager/css/eventol-bootstrap.css" %}" />
+    <link rel="stylesheet" type="text/css" media="all" href="{% static "manager/css/eventol.css" %}" />
+    {% if event.css_custom %}
+    <link rel="stylesheet" type="text/css" media="all" href="{{ event.css_custom.url }}" />
+    {% endif %}
+    <script src="{% static "manager/bower_components/jquery/dist/jquery.min.js" %}"></script>
+    <script type="text/javascript" src="{% url 'javascript-catalog' %}"></script>
+
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/icon?family=Material+Icons">
+
+    {% block other-head %}
+    <link rel="stylesheet" type="text/css" href="{% static "manager/bower_components/slick-carousel/slick/slick.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "manager/bower_components/slick-carousel/slick/slick-theme.css" %}" />
+
+    <link rel="stylesheet" href="{% static "manager/bower_components/leaflet/dist/leaflet.css" %}" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Comfortaa:400,700" rel="stylesheet">
+
+    <style>
+        .slick-prev:before,
+        .slick-next:before {
+            color: black;
+        }
+
+        .map {
+            height: 300px;
+            width: 100%;
+        }
+    </style>
+    {% endblock %}
+    {% endblock %}
+</head>
+
+<body>
+    {% block navbar %}
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-default navbar-fixed-top color-1 glow">
+        <div class="">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="pull-left" href="/">
+                    {% if EVENTOL_SETTINGS.logo_header %}
+                    <img class="img-responsive eventol-logo" src="{{ EVENTOL_SETTINGS.logo_header.url }}" alt="EventoL Logo">
+                    {% else %}
+                    <img class="img-responsive eventol-logo" src="{% static "manager/img/eventol-white.png" %}" alt="EventoL Logo">
+                    {% endif %}
+                </a>
+            </div>
+            <div id="navbar" class="collapse navbar-collapse color-1 glow">
+                {% block navbar-menu %}
+                <ul class="nav navbar-nav navbar-right">
+                    {% if user.is_authenticated and event_slug is None %}
+                    <li>
+                        <a href="{% url "create_event" %}" class="btn btn-raised btn-warning" style="padding:0.6em; margin:1em; font-family: Roboto;">
+                            {% trans "Create event" %}
+                        </a>
+                    </li>
+                    {% endif %}
+                    {% if event_slug is not None %}
+                    {% if user.is_authenticated and user|is_organizer:event_slug %}
+                    <li class="dropdown">
+                        <a href="#" data-target="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-cogs"></i> {% trans "Manage event" %} <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="{% url "edit_event" event_slug %}">
+                                    <i class="fa fa-cogs"></i> {% trans "Edit event" %}
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url "event_add_image" event_slug %}">
+                                    <i class="fa fa-cogs"></i> {% trans "Edit image" %}
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    {% endif %}
+                    {% if not user.is_authenticated or not user|is_registered_any_way:event_slug %}
+                    <li>
+                        <a title="Register to this event" href="{% url "attendee_registration" event_slug %}">{% trans "Check in" %}</a>
+                    </li>
+                    {% endif %}
+                    {% if event.activity_proposal_is_open and event.use_proposals %}
+                    <li>
+                        <a href="{% url "activity_proposal" event_slug %}">
+                            {% trans "Submit your talk" %}
+                        </a>
+                    </li>
+                    {% endif %}
+                    {% if user.is_authenticated and user|is_speaker:event_slug %}
+                    <li>
+                        <a href="{% url "my_proposals" event_slug %}">{% trans "My Proposals" %}</a>
+                    </li>
+                    {% endif %}
+                    {% if user.is_authenticated and user|is_registered:event_slug %}
+                    <li>
+                        <a href="{% url "view_ticket" event_slug %}">{% trans "View my Ticket" %}</a>
+                    </li>
+                    {% endif %}
+                    <li class="dropdown">
+                        <a href="#" data-target="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <i class="fa fa-th"></i> {% trans "Event" context "navbar" %} <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            {% if event.use_schedule %}
+                            <li>
+                                <a href="{% url "schedule" event_slug %}">
+                                    <i class="fa fa-calendar"></i> <i class="fa pythofa-calendar"></i> {% trans "Schedule" %}
+                                </a>
+                            </li>
+                            {% if user.is_authenticated and user|is_organizer:event_slug %}
+                            <li>
+                                <a href="{% url "rooms_list" event_slug %}">
+                                    <i class="fa fa-th"></i> {% trans "Manage Rooms" %}
+                                </a>
+                            </li>
+                            {% endif %}
+                            {% endif %}
+                            {% if not PRIVATE_ACTIVITIES or user|is_collaborator:event_slug  %}
+                            <li>
+                                <a href="{% url "activities" event_slug %}">
+                                    <i class="fa fa-th"></i> {% trans "View Activities" %}
+                                </a>
+                            </li>
+                            {% endif %}
+                            <li>
+                                <a href="{% url "reports" event_slug %}">
+                                    <i class="fa fa-bar-chart"></i> {% trans "View Reports" %}
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" data-target="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <i class="fa fa-group"></i> {% trans "Collaborators" %} <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            {% if event.use_collaborators %}
+                            {% if not user.is_authenticated or not user|is_collaborator:event_slug %}
+                            <li>
+                                <a href="{% url "collaborator_registration" event_slug %}">
+                                    <i class="fa fa-pencil-square-o"></i> {% trans "Register as a Collaborator" %}
+                                </a>
+                            </li>
+                            {% endif %}
+                            {% endif %}
+                            {% if event.use_installers %}
+                            {% if not user.is_authenticated or not user|is_installer:event_slug %}
+                            <li>
+                                <a href="{% url "installer_registration" event_slug %}">
+                                    <i class="fa fa-linux"></i> {% trans "Register as an Installer" %}
+                                </a>
+                            </li>
+                            {% endif %}
+                            {% endif %}
+                            {% if user.is_authenticated %}
+                            {% if user|can_take_attendance:event_slug %}
+                            <li>
+                                <a href="{% url "manage_attendance" event_slug %}">
+                                    <i class="fa fa-check-square-o"></i> {% trans "Manage Attendance" %}
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url "attendee_registration_print_code" event_slug %}">
+                                    <i class="fa fa-check-square-o"></i> {% trans "Print self-registration code" %}
+                                </a>
+                            </li>
+                            <li>
+                                <a target="_blank" href="{% url "attendance_by_autoreadqr" event_slug %}">
+                                    <i class="fa fa-check-square-o"></i> {% trans "Open auto-read QR code page" %}
+                                </a>
+                            </li>
+                            {% endif %}
+                            {% if event.use_installations and user|is_installer:event_slug %}
+                            <li>
+                                <a href="{% url "installation" event_slug %}">
+                                    <i class="fa fa-laptop"></i> {% trans "Submit an installation" %}
+                                </a>
+                            </li>
+                            {% endif %}
+                            {% if user|is_organizer:event_slug %}
+                            <!--
+                                        <li>
+                                            <a href="{% url "draw" event_slug %}">
+                                                <i class="fa fa-gift"></i> {% trans "Draw" %}
+                                            </a>
+                                        </li>
+                                        -->
+                            <li>
+                                <a href="{% url "add_organizer" event_slug %}">
+                                    <i class="fa fa-check-square-o"></i> {% trans "Manage Organizers" %}
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url "add_registration_people" event_slug %}">
+                                    <i class="fa fa-pencil-square-o"></i> {% trans "Manage Registration People" %}
+                                </a>
+                            </li>
+                            {% endif %}
+                            {% endif %}
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" data-target="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-at"></i> {% trans "Follow Us!" %} <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            {% for contact in contacts %}
+                            <li><a href="{{ contact|get_contact_url }}" target="_blank">
+                                    <i class="fa {{ contact.type.icon_class }}"></i> {{ contact.text }}</a>
+                            </li>
+                            {% endfor %}
+                            <li><a href="{% url "contact" event_slug %}">
+                                    <i class="fa fa-envelope"></i> {% trans "Contact Us!" %}</a>
+                            </li>
+                        </ul>
+                    </li>
+                    {% endif %}
+                    {% get_available_languages as languages %}
+                    {% if languages %}
+                    <!-- language dropdown start-->
+                    <li class="dropdown">
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                            <span class="vertical-middle">
+                                <i class="fa fa-globe"></i>
+                            </span>
+                            {% trans "Languages" %}
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            {% for lang_code, lang in languages %}
+                            <li>
+                                <a href="#" onclick="return change_lang('{{ lang_code }}');">
+                                    <i class="fa fa-flag"></i> {{ lang|title }}
+                                </a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                    <!-- language.dropdown end -->
+                    {% endif %}
+                    {% if not user.is_authenticated %}
+                    <li class="dropdown">
+                        <a href="#" data-target="#" class="dropdown-toggle" data-toggle="dropdown">{% trans "Organizadores" %} <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="{% url "account_login" %}">
+                                    <i class="material-icons">account_box</i> {% trans "Login" %}
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    {% else %}
+                    <li class="dropdown">
+                        <a href="#" data-target="#" class="dropdown-toggle" data-toggle="dropdown"><i class="material-icons">account_box</i> {{ user_display }}<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="{% url "user_profile" %}">
+                                    <i class="material-icons">assignment_ind</i> {% trans "Profile" %}
+                                </a>
+                            </li>
+                            {% if not user.has_usable_password %}
+                            <li>
+                                <a href="{% url "account_set_password" %}">
+                                    <i class="material-icons">vpn_key</i> {% trans "Set Password" %}
+                                </a>
+                            </li>
+                            {% endif %}
+                            <li>
+                                <a href="{% url "account_change_password" %}">
+                                    <i class="material-icons">autorenew</i> {% trans "Change Password" %}
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url "account_logout" %}">
+                                    <i class="material-icons">power_settings_new</i> {% trans "Logout" %}
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    {% endif %}
+                </ul>
+                {% endblock navbar-menu %}
+                {% block extra-nav %}{% endblock %}
+            </div>
+        </div>
+    </nav>
+    {% endblock %}
+
+    <div class="container-fluid color-1">
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-{% ifequal message.tags 'error' %}danger{% else %}{{ message.tags }}{% endifequal %} alert-dismissible text-center" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            {{ message }}
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% block main-content %}
+        <div>
+            {% block content %}
+            <div id="portada" class="pixeles-f relative">
+
+                <h2 class="text-color-3 center pixel-font grdnt2">12va conferencia Argentina de Python</h2>
+
+                <div id="logo">
+                    <svg id="iso-bg" version="1.1" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+                        <circle class="st0" cx="300" cy="300" r="300"/>
+                        <g id="puente">
+                            <path class="st1" d="m591.3 362.4s-79.5-95.9-128.4-167.6c-15.2-22.4-43.9-65.3-67.8-104.1-26.3-42.8-47.1-80.8-47.1-80.8v8.8s24.1 42.5 58.1 96.7c16.2 25.9 35.5 54.6 54 82.5 57.1 86.2 123.3 162 123.3 162l-79.6-25.2s-17.9-28.4-38.3-63.7c-18.2-31.5-38.3-68.6-52.5-95.7-30.2-57.5-65-140.4-65-140.4v10.8s20.1 52.1 61.7 132.2 87.4 154.6 87.4 154.6l-44.6-13.8s-29.5-56.3-53.7-112.4-50.7-126.5-50.7-126.5v10.6s18.6 53.1 43 109.7 56.1 116.7 56.1 116.7l-25.1-7.3s-31.2-72-40.3-93.6-35.8-92.3-35.8-92.3l1 15.2s8 20.3 31.2 78.9c23.1 58.6 38.7 89.8 38.7 89.8l-18.4-6.1s-13.9-31.5-28.3-66.7c-14.2-35.2-22.1-56.7-22.1-56.7v13.2s5.7 16.3 17.8 45.8 26.5 62.4 26.5 62.4h-184.8s14.4-32.8 26.5-62.4 17.8-45.8 17.8-45.8v-13.2s-7.8 21.6-22.2 56.7-28.3 66.7-28.3 66.7l-18.4 6.1s15.6-31.2 38.7-89.8 31.2-78.9 31.2-78.9l1-15.2s-26.7 70.7-35.8 92.3-40.3 93.6-40.3 93.6l-25.1 7.3s31.7-60.1 56.1-116.7c24.5-56.6 43-109.7 43-109.7v-10.6s-26.5 70.5-50.7 126.6-53.7 112.4-53.7 112.4l-44.6 13.8s45.7-74.6 87.4-154.6 61.7-132.2 61.7-132.2v-10.9s-34.7 82.9-65 140.4c-14.3 27.2-34.3 64.2-52.5 95.7-20.4 35.3-38.3 63.7-38.3 63.7l-79.6 25.2s66.1-75.7 123.3-162c18.5-27.9 37.8-56.5 54-82.5 34-54.2 58.1-96.7 58.1-96.7v-8.8s-20.8 37.9-47.1 80.8c-23.8 38.8-52.5 81.7-67.8 104.1-48.8 71.7-128.3 167.6-128.3 167.6h582.6z"/>
+                            <path class="st2" d="m250.4 141.6c-2.9 77.2-8.3 116.8-11.6 143l-233.1 73.8c4.1 20.6 10.2 40.4 18.3 59.2h276l0.1-152.5-45.2 14.3c5.3-42.1 9-84.2 10.9-126.2 0.7-16.1 1.2-32.3 1.5-48.4l32.9-16v-14.2l-32.7 5c-0.8-42.6-2-72.8-2.2-77.6-5.2 0.6-10.3 1.3-15.4 2.2 0.2 11 3.4 60.7 0.5 137.4z"/>
+                            <path class="st3" d="m594.3 358.4l-233.1-73.8c-3.3-26.2-8.8-65.8-11.6-143-2.8-76.7 0.3-126.4 0.7-137.3-5.1-0.9-10.2-1.6-15.4-2.2-0.2 4.8-1.4 35-2.2 77.6l-32.7-5v14.3l32.9 16c0.2 16.1 0.7 32.3 1.5 48.4 1.9 42 5.6 84.1 10.9 126.2l-45.3-14.4 0.1 152.5h276c8-18.9 14.1-38.7 18.2-59.3z"/>
+                            <path class="st4" d="M300,265.2L23.5,416.5l0,0C69,524.3,175.6,600,300,600s231-75.7,276.5-183.5L300,265.2z"/>
+                        </g>
+                    </svg>
+                    <h1>PyConAr</h1>
+                    <svg id="wi-py" version="1.1" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+                        <linearGradient id="e" x1="300" x2="300" y1="-48" y2="634" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="#FBD20C" offset=".3"/><stop stop-color="#EEBE33" offset=".7"/>
+                        </linearGradient>
+                        <linearGradient id="d" x1="300" x2="300" y1="577" y2="431" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="#4595D1" offset=".3"/><stop stop-color="#2770B8" offset=".7"/>
+                        </linearGradient>
+                        <linearGradient id="c" x1="300" x2="300" y1="485" y2="372" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="#4595D1" offset=".3"/><stop stop-color="#2770B8" offset=".7"/>
+                        </linearGradient>
+                        <linearGradient id="b" x1="300" x2="300" y1="400" y2="317" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="#4595D1" offset=".3"/><stop stop-color="#2770B8" offset=".7"/>
+                        </linearGradient>
+                        <linearGradient id="a" x1="300" x2="300" y1="321" y2="250" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="#4595D1" offset=".3"/><stop stop-color="#2770B8" offset=".7"/>
+                        </linearGradient>
+                        <path id="wipy-b1" class="st2" d="M395.7,381.4c-40,40-89.3,70.6-138.5,82.4s-88.9,2.6-113.4-21.9l5.1,24.8l104.8,64.9
+                            c67.9-12.8,134.5-51.9,187.4-104.8C435.3,432.6,389.9,387.2,395.7,381.4z"/>
+                        <path id="wipy-b2" class="st2" d="M340.3,326c-24.5,24.5-52.9,45.1-79.5,55.9s-46.2,9.9-56.5-0.5l11,31.1l80.4,15.4c30.2-14.6,59.6-36.1,85-61.5
+                            C375.5,371.5,335.2,331.2,340.3,326z"/>
+                        <path id="wipy-b3" class="st2" d="M325.2,310.9c-6.4,6.4-58.5-10.7-59.9-17.4c-13.1,11-25.8,20-37.4,26.6l-0.1,0.1l37.7,37.7
+                            C283.6,347.7,304.7,331.4,325.2,310.9L325.2,310.9z"/>
+                        <path id="wipy-a1" class="st5" d="m481.4 431.5c-9.8 0-18.7 4-25.2 10.4-40 40-95.2 64.7-156.2 64.7s-116.2-24.7-156.2-64.7c-6.4-6.4-15.4-10.4-25.2-10.4-19.7 0-35.6 16-35.6 35.6 0 9.8 4 18.7 10.4 25.2 52.9 52.9 125.9 85.6 206.6 85.6s153.7-32.7 206.6-85.6c6.4-6.4 10.4-15.4 10.4-25.2 0-19.7-15.9-35.6-35.6-35.6z"/>
+                        <path id="wipy-a2" class="st6" d="m300 485.2c55.1 0 105-22.3 141.1-58.4 5.8-5.8 9.4-13.8 9.4-22.7 0-17.7-14.4-32.1-32.1-32.1-8.9 0-16.9 3.6-22.7 9.4-24.5 24.5-58.3 39.7-95.7 39.7s-71.2-15.2-95.7-39.7c-5.8-5.8-13.8-9.4-22.7-9.4-17.7 0-32.1 14.4-32.1 32.1 0 8.9 3.6 16.9 9.4 22.7 36.1 36.1 86 58.4 141.1 58.4z"/>
+                        <path id="wipy-a3" class="st7" d="m300 399.7c31.5 0 60-12.8 80.6-33.4 5.2-5.2 8.3-12.3 8.3-20.2 0-15.7-12.8-28.5-28.5-28.5-7.9 0-15 3.2-20.2 8.3-10.3 10.3-24.6 16.7-40.3 16.7s-30-6.4-40.3-16.7c-5.2-5.2-12.3-8.3-20.2-8.3-15.7 0-28.5 12.8-28.5 28.5 0 7.9 3.2 15 8.3 20.2 20.8 20.7 49.3 33.4 80.8 33.4z"/>
+                        <g id="wipy-head">
+                            <path class="st8" d="M300,321.3c9.8,0,18.7-4,25.2-10.4s10.4-15.4,10.4-25.2c0-19.7-16-35.6-35.6-35.6s-35.6,16-35.6,35.6
+                                c0,9.8,4,18.7,10.4,25.2C281.3,317.3,290.2,321.3,300,321.3z"/>
+                            <path id="wipy-tongue" class="st1" d="M293.7,338.8l5.9-4.7l6.5,5c0-0.1-1.3-4.3-1.3-10.5s2.4-19.8,2.4-19.8h-14.8c0,0,2.5,13.6,2.5,19.8
+                                C295.1,334.8,293.7,338.7,293.7,338.8L293.7,338.8z"/>
+                            <path class="st8" d="M300,310.3c6.6,2.1,18.7,7,25.2,0.6s10.4-15.4,10.4-25.2c0-19.7-16-35.6-35.6-35.6s-35.6,16-35.6,35.6
+                                c0,9.8,4,18.7,10.4,25.2C281.3,317.3,293.2,312.4,300,310.3z"/>
+                            <circle class="st1" cx="280.5" cy="285.8" r="7.2"/>
+                            <circle class="st1" cx="319.5" cy="285.7" r="7.2"/>
+                        </g>
+                    </svg>
+                </div>
+                <div class="center">
+                    <div class="fecha margin-auto small-padding text-white color-1 glow border-retro-1">
+                        <h3 class="margin-none pixel-font">16 al 27 de Noviembre de 2020</h3>
+                    </div>
+                    <div class="block social-icons center full-width relative z-plus-1 sub-anim sub-escalar">
+                        <a href="https://www.instagram.com/pythonargentina/"><i class="fa fa-instagram"></i></a>
+                        <a href="https://www.facebook.com/pyconar/"><i class="fa fa-facebook-square"></i></a>
+                        <a href="https://t.me/pyconar"><i class="fa fa-telegram"></i></a>
+                        <a href="https://twitter.com/pyconar"><i class="fa fa-twitter-square"></i></a>
+                    </div>
+                    <small class="margin-none">
+                        <span id="cuenta-regresiva"></span>
+                    </small>
+                </div>
+
+                <div class="medium-padding"></div>
+                <div class="separador up-color-2"></div>
+            </div>
+
+
+
+            <svg version="1.1" id="rio-bg" class="relative" class="full-width" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 1000 55.4">
+                <polygon class="fill-grdnt1" points="-1,-1 -1,55.4 671.1,5.3 1001,55.4 1001,-1 " />
+            </svg>
+
+
+
+            <div class="big-padding">
+                <div class="relative max-w-1200 margin-auto color-white big-padding medium-margin glow border-bottom border-color-2">
+                    <h2 class="center titulo text-color-1">Acerca del evento</h2>
+                    <br>
+                    <div class="columnas-2 left-align">
+                        <!--p><img alt="" src="includes/header.jpg" style="border-style:solid; border-width:0px; height:20%; margin:2px 20px; width:100%"></p-->
+                        <p>La PyCon (Python Conference) es una convención anual para la discusión y promoción del lenguaje
+                            de programación Python. Se originó en Estados Unidos pero hoy en día se realiza en ese país, en
+                            Europa, España, Brasil, Inglaterra, Italia, China, y en otros treinta países.</p>
+                        <p>Desde 2009 se realiza también en Argentina, ese año en CABA, siendo declarado de Interés
+                            Cultural por la Ciudad de Buenos Aires. En consecuencia al carácter federal de nuestro país,
+                            las siguientes ediciones se realizaron en diferentes ciudades: Córdoba, Junín, Rosario,
+                            Quilmes, Rafaela, Mendoza y Bahía Blanca.</p>
+                        <p>La PyCon Argentina reúne a gran parte de la comunidad de habla hispana, de todas las edades y
+                            con un fuerte acento en diversidad. Es gratuita y abierta a todo público, dirigida a
+                            profesionales, estudiantes, académiques, empresaries, trabajadores, funcionaries
+                            públiques, entusiastes; es decir, se trata de un evento inclusivo y para todes. El
+                            número de asistentes crece año a año, rondando las 1080 personas en el último año, en CABA.</p>
+                        <p>En general el evento es de tres días: miércoles, jueves y viernes; el primer día de talleres y
+                            tutoriales y los siguientes dos días para charlas ya en formato conferencia clásica así como
+                            también espacios abiertos, talleres, y diferentes ámbitos pensados para la interacción de la
+                            comunidad de Python con otras comunidades, empresas e instituciones gubernamentales.</p>
+                        <p>El material presentado incluye todos los niveles, desde lo más orientado a principantes como los
+                            talleres y tutoriales del primer día, hasta charlas de nivel avanzado con calidad
+                            internacional, dadas por invitades de otros países o por disertantes locales que también dan
+                            charlas similares en conferencias de otros países.</p>
+                        <p>El evento está organizado por la comunidad de Python Argentina, cuyo objetivo es nuclear a les
+                            usuaries de Python y promover su uso.&nbsp; Python es un lenguaje de programación, de licencia
+                            abierta y libre, que es cada día más popular en la enseñanza, la industria y la ciencia, y es
+                            el lenguaje de mayor crecimiento en los últimos años. La comunidad cuenta con el soporte formal
+                            de la Asociación Civil Python Argentina.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="triangle-up-color-2 relative"></div>
+            <div class="relative full-width color-2 big-padding clear center">
+                <div class="margin-auto max-w-1200">
+                    <h1 class="small-margin titulo text-color-1 inline-block">Speakers</h1>
+                    <!-- <div><img class="shadow" alt="Sheila" src="https://raw.githubusercontent.com/PyAr/pyconar2018_template/master/2019/eventoL_template/keynote-sheila.png" style="height:40%; margin-bottom:2px; margin-top:2px; width:70%"></div> -->
+                    <!-- <div><img class="shadow" alt="Martin" src="https://raw.githubusercontent.com/PyAr/pyconar2018_template/master/2019/eventoL_template/keynote-martin.jpg" style="height:40%; margin-bottom:2px; margin-top:2px; width:70%"></div> -->
+                </div>
+            </div>
+            <div class="triangle-down-color-e relative"></div>
+
+            <div class="relative margin-auto medium-padding color-white big-margin center glow border-bottom border-color-1">
+                <div class="well">
+                    <div class="row" style="text-align: center;">
+                        <h1 class="titulo text-color-2 inline-block">{% trans 'Talks and Workshops' %}</h1>
+                    </div>
+                    <div id="slick_charlas">
+                        <!-- {% if activities %} -->
+                        {% for activity in activities %}
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <a href='{% url "activity_detail" event.event_slug activity.id %}'>
+                                    {% if activity.image %}
+                                    <img src="{% cropped_thumbnail activity "cropping" %}" alt="{{ activity.title }}" width="100%" heigth="100%">
+                                    {% else %}
+                                    <img src="{% static "manager/img/charlas.png" %}" width="100%" alt="Charlas y Talleres">
+                                    {% endif %}
+                                </a>
+                            </div>
+                            <div class="col-sm-6">
+                                <a style='text-decoration: none;' href='{% url "activity_detail" event.event_slug activity.id %}'>
+                                    <h2>{{ activity.title }}</h2>
+                                </a>
+
+                                <p><strong>{{ activity.abstract }}</strong></p>
+
+                                <p>{{ activity.long_description }}</p>
+
+                                <p><strong>{% trans 'Speakers' %}:</strong> {{ activity.speakers_names|title }}</p>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        <!-- {% else %}
+                        <div class="row">
+                            <div class="col-sm-6 col-md-6 col-lg-6" style="padding-top: 30px;">
+                                <img src="{% static "manager/img/charlas.png" %}" width="100%" alt="Charlas y Talleres">
+                            </div>
+                            <div class="col-sm-6 col-md-6 col-lg-6">
+                                <h2>Charlas y Talleres</h2>
+
+                                <p><strong>Durante todo el día, para que puedas aprender y descubrir más sobre el Software
+                                        Libre</strong></p>
+
+                                <p>A lo largo de la jornada, se llevarán a cabo diversas charlas y talleres para todo tipo
+                                    de público. No es necesario que sepas algo de informática para asistir al FLISoL. Hay
+                                    charlas tanto para principiantes como para entusiastas y expertos.</p>
+
+                                <p>Algunos de los temas propuestos son: Introducción a GNU/Linux, Filosofía del Software
+                                    Libre, Recomendaciones para Migrar, Comunidades, Presentación y utilización de algunas
+                                    de las principales aplicaciones (paquete de ofimática, navegador web, editor de
+                                    imágenes, etc.), Experiencias con Software Libre en Educación, Conocimiento Libre,
+                                    Licencias, Construcción Colaborativa de Conocimiento, Software Libre y Trabajo, Hardware
+                                    Libre, Investigación, Edición Multimedia con aplicaciones libres, Imagen y Sonido.</p>
+
+                                <p>Además, si tenés algo que contar y querés dar una charla, vos también podés formar parte.
+                                    {% comment %} <a href="{% url "activity_proposal" event_slug event_uid %}">Envianos tu propuesta!</a></p> {% endcomment %}
+                            </div>
+                        </div>
+                        {% endif %} -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="triangle-up-color-white relative"></div>
+            <div class="relative full-width color-white small-padding center clear glow">
+                <div class="margin-auto max-w-800">
+                    <h1 class="titulo text-color-1 inline-block">Te puede interesar...</h1>
+
+                    <div class="remeras">
+                        <h2 class="subtitulo text-color-2">Cosas</h2>
+                        <div class="center">
+                            <!-- <img src="https://lh3.googleusercontent.com/JtyyD6XatNuXLzN2u5g64dIfxYCzTAlnGnRHXx0GLYJDVG0-PA_yhCSPxGPsepaCpFp3QbPxRxndVBNZwfXXNgd7e9F9Kre7StTSOKqAOC3Jps-otwqDypu3I8w7=w740"> -->
+                        </div>
+                        <div>
+                            <!-- ¿Querés tu remera de PyConAr 2020? Completá <a href="http://bit.ly/remera-pyconar20">este formulario</a>
+                            <p>Es una remera calidad PREMIUM (algodón peinado premium, doble refuerzos en hombros, tapa costuras), en color azul marino. El costo de la remera es $620. Y hay un montón de talles para elegir!</p> -->
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="triangle-down-color-white-reverse relative"></div>
+            <div class="big-margin"></div>
+
+
+            <div class="triangle-up-color-white-2 relative"></div>
+            <div class="relative full-width color-white small-padding center clear glow">
+                <div class="margin-auto max-w-800">
+                    <h1 class="titulo text-color-1 inline-block">Código de conducta</h1>
+
+                    <div>
+                        <p>
+                            PyConAr es un evento de la comunidad que busca mejorar la comunicación y
+                            colaboración entre los desarrolladores.
+                        </p>
+                        <p>
+                            Valoramos la participación de cada miembro de la comunidad de Python y
+                            queremos que todos los asistentes tengan una experiencia agradable y
+                            satisfactoria. Para ello, se espera de todos los asistentes que se sean
+                            respetuosos y educados con el resto de la los asistentes, sea durante la
+                            conferencia misma o cualquier otra etapa relacionada.
+                        </p>
+                        <p>
+                            Para que quede claro lo que se espera, todo delegado, disertante,
+                            expositor o voluntario deberá seguir el siguiente Código de Conducta.
+                            Los organizadores cuidarán la observación de estas normas
+                            durante el evento.
+                        </p>
+                    </div>
+
+                    <div class="conducta-version-corta">
+                        <h2 class="subtitulo text-color-2">La versión corta</h2>
+                        <div>
+                            <p>
+                                Uno de los objetivos de PyConAr es proveer una experiencia libre
+                                de acoso o discriminación para todos, sin distinciones de género,
+                                orientación sexual, invalidez, aspecto físico, tamaño corporal,
+                                etnia, o religión. No se tolerará la discriminación de los asistentes
+                                en ninguna forma.
+                            </p>
+                            <p>
+                                Todo contenido debería ser el apropiado para una audiencia profesional
+                                incluyendo a personas de distintas áreas. Las temáticas y contenidos
+                                sexuales no son apropiadas para ninguna instancia del evento.
+                            </p>
+                            <p>
+                                Se amable con los demás. No insultes o desprecies a otros aisistentes.
+                                Compórtate como un profesional. Recuerda que chistes discriminatorios, sexistas,
+                                racistas, de acoso no son apropiados para PyConAr.
+                            </p>
+                            <p>
+                                A los asistentes que violen estas normas se les podrá pedir que abandonen
+                                la conferencia sin derecho a reembolso, siendo suficiente para ello
+                                el criterio de los organizadores.
+                            </p>
+                            <p>
+                                Gracias por hacer de este un evento abierto a la comunidad y amistoso.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="conducta-version-larga">
+                        <h2 class="subtitulo text-color-2">La versión larga</h2>
+                        <div>
+                            <p>
+                                Acoso incluye comentarios ofensivos relativos a género, orientación sexual,
+                                invalidez, aspecto físico, tamaño corporal, etnia, religión,
+                                pornografía en espacios públicos, intimidación deliberada, acecho, persecución,
+                                acoso por fotografías o grabaciones, constante interrupción de charlas u otros
+                                eventos, contacto físico impropio y el acoso sexual.
+                            </p>
+                            <p>
+                                Los participantes que sean apercibidos por acoso deberán abstenerse inmediatamente.
+                            </p>
+                            <p>
+                                Se cuidadoso al seleccionar las palabras. Recuerda que los chistes sexistas,
+                                racistas y de otras clases pueden ser ofensivos para los demás.
+                                El exceso de malas palabras o chistes ofensivos no son apropiados para PyConAr.
+                            </p>
+                            <p>
+                                Si un participante se comportara de forma que violase el Código de Conducta,
+                                los organizadores de la conferencia podrían tomar las medidas que ellos
+                                consideren adecuadas, incluyendo el apercibimiento o expulsión de la
+                                conferencia, sin derecho a reembolso.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="conducta-contacto">
+                        <h2 class="subtitulo text-color-2">Contacto</h2>
+                        <div>
+                            <p>
+                                Si eres objeto de acoso, notas que alguien más está siendo acosado, o
+                                tienes cualquier otro reclamo, por favor contáctate con uno de los
+                                organizadores del evento o via mail a: <br />
+                                <br>
+                                <!-- coc@ac.python.org.ar <br>
+                                yamila@ac.python.org.ar <br>
+                                adelfino@gmail.com -->
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="triangle-down-color-white-reverse relative"></div>
+            <div class="big-margin"></div>
+
+
+            <div class="relative full-width big-padding center color-2">
+                <div class="margin-auto max-w-1200">
+                    <h1 class="titulo text-color-1 inline-block">Requerimientos para los talleres</h1>
+                    <div class="grid3">
+                        <div class="grid3__item">
+                            <h4>Taller #1</h4>
+                            <small>Día..</small>
+                            <p>Vas a necesitar:</p>
+                            <ul>
+                                <li>GIT <a href="https://www.atlassian.com/git/tutorials/install-git" target="_blank"></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="triangle-down-color-2 relative"></div>
+            <div class="triangle-up-color-white relative"></div>
+            <div class="relative full-width color-white small-padding center clear glow">
+                <div class="margin-auto" style="max-width:1064px">
+                    <h1 class="subtitulo text-color-1">Con el apoyo de:</h1>
+                    <p>
+                        <img alt="" src="https://sponsors.png" style="height:70%; margin-bottom:4px; margin-top:4px; width:90%">
+                    </p>
+                </div>
+            </div>
+
+
+        <div class="big-padding">
+            <div class="relative max-w-1200 margin-auto color-white big-padding medium-margin glow border-bottom border-color-2">
+                <h2 class="center titulo text-color-1">¿Información Adicional?</h2>
+                <br>
+                <div class="columnas-1 left-align">
+                    <p>Información:</p>
+                        <ul>
+                            <li>.</li>
+                        </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="separador-front color-e full-width"></div>
+
+        <footer id="main-footer" class="center">
+            <div class="separador down-color-f"></div>
+            <div id="footer-icons" class="big-padding text-color-3">
+                <h3 class="subtitulo">Seguir PyConAr 2020!</h3>
+                <div class="sub-anim sub-escalar">
+                    <a class="contact-link" href="https://www.instagram.com/pythonargentina/"><i class="fa fa-instagram"></i></a>
+                    <a class="contact-link" href="https://www.facebook.com/pyconar/"><i class="fa fa-facebook-square"></i></a>
+                    <a class="contact-link" href="https://t.me/pyconar"><i class="fa fa-telegram"></i></a>
+                    <a class="contact-link" href="https://twitter.com/pyconar"><i class="fa fa-twitter-square"></i></a>
+                </div>
+            </div>
+        </footer>
+        {% endblock %}
+    </div>
+    {% endblock %}
+    </div>
+
+    {% block script %}
+    <script src="{% static "manager/bower_components/bootstrap/dist/js/bootstrap.min.js" %}"></script>
+    <script src="{% static "manager/bower_components/bootstrap-material-design/dist/js/ripples.min.js" %}"></script>
+    <script src="{% static "manager/bower_components/bootstrap-material-design/dist/js/material.min.js" %}"></script>
+    {% block material %}
+    <script>
+        $(document).ready(function() {
+            $.material.options.autofill = true;
+            $.material.init();
+        });
+
+        function change_lang(language_code) {
+            $.post(
+                "{% url 'set_language' %}", {
+                    language: language_code,
+                    csrfmiddlewaretoken: "{{ csrf_token }}"
+                },
+                function(data, status, xhr) {
+                    location.reload();
+                }
+            );
+        }
+    </script>
+    {% endblock %}
+    {% block other-script %}
+    <script src="{% static "manager/bower_components/slick-carousel/slick/slick.min.js" %}"></script>
+    <script src="{% static "manager/bower_components/leaflet/dist/leaflet.js" %}"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('#slick_charlas').slick({
+                'autoplay': true,
+                'dots': true
+            });
+
+            (function() {
+                var isPlaying = true;
+                $('#slick_charlas').click(function() {
+                    if (isPlaying) {
+                        $('#slick_charlas')
+                            .slick('slickSetOption', 'autoplay', false)
+                            .slick('slickPause');
+                        isPlaying = false;
+                    } else {
+                        $('#slick_charlas')
+                            .slick('slickSetOption', 'autoplay', true)
+                            .slick('slickPlay');
+                        isPlaying = true;
+                    }
+                });
+            })()
+        });
+
+        var ahora = new Date();
+        if (ahora < new Date(2020, 11, 16)) {
+            var dias = Math.round((new Date(2020, 11, 16) - new Date()) / (1000 * 60 * 60 * 24)) + 1;
+            $('#cuenta-regresiva').html('Faltan ' + dias + ' días')
+        } else if (ahora < new Date(2020, 11, 27)) {
+            $('#cuenta-regresiva').html('¡Es ahora!')
+        } else {
+            $('#cuenta-regresiva').html('Te esperamos en la próxima')
+        }
+    </script>
+
+    {% endblock %}
+    {% endblock %}
+    {% block more-script %}{% endblock %}
+</body>
+
+</html>

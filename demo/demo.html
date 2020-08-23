@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es-AR"><head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="EventoL - PyConAr 2019. Event Management Software">
+    <title>PyConAr 2020</title>
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://use.fontawesome.com/releases/v5.0.1/css/all.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" media="all" href="eventol-bootstrap.css">
+    <link rel="stylesheet" type="text/css" media="all" href="eventol.css">
+
+     <!-- link a hoja de estilos nuevos-->
+    <link rel="stylesheet" type="text/css" media="all" href="estilos.css">
+</head>
+
+<body class="text-color-3 pixeles-1">
+ <!-- navbar de eventol, agregar clases "grdnt1 glow"-->
+    <nav class="navbar navbar-default navbar-fixed-top grdnt1 glow">
+        <div>
+            <div class="navbar-header">             
+                    <img class="img-responsive eventol-logo" src="http://blog.taniquetil.com.ar/images/pyar-logo-nuevo.png" alt="EventoL Logo"/>      
+            </div>
+            <div id="navbar" class="collapse navbar-collapse color-1 glow">
+                        <span style="float:right; margin: 10px">(eventol Bootstrap navbat)</span>
+            </div>
+        </div>
+    </nav>
+
+
+    <div class="container-fluid">
+           
+        
+        <div id="portada" class="pixeles-f relative">
+            <h2 class="text-color-3 center pixel-font grdnt2">12va conferencia Argentina de Python</h2>
+            <div id="logo">
+                <svg id="iso-bg" version="1.1" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+                    <circle class="st0" cx="300" cy="300" r="300"/>
+                    <g id="puente">
+                        <path class="st1" d="m591.3 362.4s-79.5-95.9-128.4-167.6c-15.2-22.4-43.9-65.3-67.8-104.1-26.3-42.8-47.1-80.8-47.1-80.8v8.8s24.1 42.5 58.1 96.7c16.2 25.9 35.5 54.6 54 82.5 57.1 86.2 123.3 162 123.3 162l-79.6-25.2s-17.9-28.4-38.3-63.7c-18.2-31.5-38.3-68.6-52.5-95.7-30.2-57.5-65-140.4-65-140.4v10.8s20.1 52.1 61.7 132.2 87.4 154.6 87.4 154.6l-44.6-13.8s-29.5-56.3-53.7-112.4-50.7-126.5-50.7-126.5v10.6s18.6 53.1 43 109.7 56.1 116.7 56.1 116.7l-25.1-7.3s-31.2-72-40.3-93.6-35.8-92.3-35.8-92.3l1 15.2s8 20.3 31.2 78.9c23.1 58.6 38.7 89.8 38.7 89.8l-18.4-6.1s-13.9-31.5-28.3-66.7c-14.2-35.2-22.1-56.7-22.1-56.7v13.2s5.7 16.3 17.8 45.8 26.5 62.4 26.5 62.4h-184.8s14.4-32.8 26.5-62.4 17.8-45.8 17.8-45.8v-13.2s-7.8 21.6-22.2 56.7-28.3 66.7-28.3 66.7l-18.4 6.1s15.6-31.2 38.7-89.8 31.2-78.9 31.2-78.9l1-15.2s-26.7 70.7-35.8 92.3-40.3 93.6-40.3 93.6l-25.1 7.3s31.7-60.1 56.1-116.7c24.5-56.6 43-109.7 43-109.7v-10.6s-26.5 70.5-50.7 126.6-53.7 112.4-53.7 112.4l-44.6 13.8s45.7-74.6 87.4-154.6 61.7-132.2 61.7-132.2v-10.9s-34.7 82.9-65 140.4c-14.3 27.2-34.3 64.2-52.5 95.7-20.4 35.3-38.3 63.7-38.3 63.7l-79.6 25.2s66.1-75.7 123.3-162c18.5-27.9 37.8-56.5 54-82.5 34-54.2 58.1-96.7 58.1-96.7v-8.8s-20.8 37.9-47.1 80.8c-23.8 38.8-52.5 81.7-67.8 104.1-48.8 71.7-128.3 167.6-128.3 167.6h582.6z"/>
+                        <path class="st2" d="m250.4 141.6c-2.9 77.2-8.3 116.8-11.6 143l-233.1 73.8c4.1 20.6 10.2 40.4 18.3 59.2h276l0.1-152.5-45.2 14.3c5.3-42.1 9-84.2 10.9-126.2 0.7-16.1 1.2-32.3 1.5-48.4l32.9-16v-14.2l-32.7 5c-0.8-42.6-2-72.8-2.2-77.6-5.2 0.6-10.3 1.3-15.4 2.2 0.2 11 3.4 60.7 0.5 137.4z"/>
+                        <path class="st3" d="m594.3 358.4l-233.1-73.8c-3.3-26.2-8.8-65.8-11.6-143-2.8-76.7 0.3-126.4 0.7-137.3-5.1-0.9-10.2-1.6-15.4-2.2-0.2 4.8-1.4 35-2.2 77.6l-32.7-5v14.3l32.9 16c0.2 16.1 0.7 32.3 1.5 48.4 1.9 42 5.6 84.1 10.9 126.2l-45.3-14.4 0.1 152.5h276c8-18.9 14.1-38.7 18.2-59.3z"/>
+                        <path class="st4" d="M300,265.2L23.5,416.5l0,0C69,524.3,175.6,600,300,600s231-75.7,276.5-183.5L300,265.2z"/>
+                    </g>
+                </svg>
+                <h1>PyConAr</h1>           				
+        		<svg id="wi-py" version="1.1" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+        			<linearGradient id="e" x1="300" x2="300" y1="-48" y2="634" gradientUnits="userSpaceOnUse">
+        			<stop stop-color="#FBD20C" offset=".3"/><stop stop-color="#EEBE33" offset=".7"/>
+        			</linearGradient>
+        			<linearGradient id="d" x1="300" x2="300" y1="577" y2="431" gradientUnits="userSpaceOnUse">
+        			<stop stop-color="#4595D1" offset=".3"/><stop stop-color="#2770B8" offset=".7"/>
+        			</linearGradient>
+        			<linearGradient id="c" x1="300" x2="300" y1="485" y2="372" gradientUnits="userSpaceOnUse">
+        			<stop stop-color="#4595D1" offset=".3"/><stop stop-color="#2770B8" offset=".7"/>
+        			</linearGradient>
+        			<linearGradient id="b" x1="300" x2="300" y1="400" y2="317" gradientUnits="userSpaceOnUse">
+        			<stop stop-color="#4595D1" offset=".3"/><stop stop-color="#2770B8" offset=".7"/>
+        			</linearGradient>
+        			<linearGradient id="a" x1="300" x2="300" y1="321" y2="250" gradientUnits="userSpaceOnUse">
+        			<stop stop-color="#4595D1" offset=".3"/><stop stop-color="#2770B8" offset=".7"/>
+        			</linearGradient>
+    				<path id="wipy-b1" class="st2" d="M395.7,381.4c-40,40-89.3,70.6-138.5,82.4s-88.9,2.6-113.4-21.9l5.1,24.8l104.8,64.9
+    					c67.9-12.8,134.5-51.9,187.4-104.8C435.3,432.6,389.9,387.2,395.7,381.4z"/>
+    				<path id="wipy-b2" class="st2" d="M340.3,326c-24.5,24.5-52.9,45.1-79.5,55.9s-46.2,9.9-56.5-0.5l11,31.1l80.4,15.4c30.2-14.6,59.6-36.1,85-61.5
+    					C375.5,371.5,335.2,331.2,340.3,326z"/>
+    				<path id="wipy-b3" class="st2" d="M325.2,310.9c-6.4,6.4-58.5-10.7-59.9-17.4c-13.1,11-25.8,20-37.4,26.6l-0.1,0.1l37.7,37.7
+    					C283.6,347.7,304.7,331.4,325.2,310.9L325.2,310.9z"/>			
+    				<path id="wipy-a1" class="st5" d="m481.4 431.5c-9.8 0-18.7 4-25.2 10.4-40 40-95.2 64.7-156.2 64.7s-116.2-24.7-156.2-64.7c-6.4-6.4-15.4-10.4-25.2-10.4-19.7 0-35.6 16-35.6 35.6 0 9.8 4 18.7 10.4 25.2 52.9 52.9 125.9 85.6 206.6 85.6s153.7-32.7 206.6-85.6c6.4-6.4 10.4-15.4 10.4-25.2 0-19.7-15.9-35.6-35.6-35.6z"/>
+    				<path id="wipy-a2" class="st6" d="m300 485.2c55.1 0 105-22.3 141.1-58.4 5.8-5.8 9.4-13.8 9.4-22.7 0-17.7-14.4-32.1-32.1-32.1-8.9 0-16.9 3.6-22.7 9.4-24.5 24.5-58.3 39.7-95.7 39.7s-71.2-15.2-95.7-39.7c-5.8-5.8-13.8-9.4-22.7-9.4-17.7 0-32.1 14.4-32.1 32.1 0 8.9 3.6 16.9 9.4 22.7 36.1 36.1 86 58.4 141.1 58.4z"/>
+    				<path id="wipy-a3" class="st7" d="m300 399.7c31.5 0 60-12.8 80.6-33.4 5.2-5.2 8.3-12.3 8.3-20.2 0-15.7-12.8-28.5-28.5-28.5-7.9 0-15 3.2-20.2 8.3-10.3 10.3-24.6 16.7-40.3 16.7s-30-6.4-40.3-16.7c-5.2-5.2-12.3-8.3-20.2-8.3-15.7 0-28.5 12.8-28.5 28.5 0 7.9 3.2 15 8.3 20.2 20.8 20.7 49.3 33.4 80.8 33.4z"/>
+    				<g id="wipy-head">
+    					<path class="st8" d="M300,321.3c9.8,0,18.7-4,25.2-10.4s10.4-15.4,10.4-25.2c0-19.7-16-35.6-35.6-35.6s-35.6,16-35.6,35.6
+    						c0,9.8,4,18.7,10.4,25.2C281.3,317.3,290.2,321.3,300,321.3z"/>
+    					<path id="wipy-tongue" class="st1" d="M293.7,338.8l5.9-4.7l6.5,5c0-0.1-1.3-4.3-1.3-10.5s2.4-19.8,2.4-19.8h-14.8c0,0,2.5,13.6,2.5,19.8
+    						C295.1,334.8,293.7,338.7,293.7,338.8L293.7,338.8z"/>
+    					<path class="st8" d="M300,310.3c6.6,2.1,18.7,7,25.2,0.6s10.4-15.4,10.4-25.2c0-19.7-16-35.6-35.6-35.6s-35.6,16-35.6,35.6
+    						c0,9.8,4,18.7,10.4,25.2C281.3,317.3,293.2,312.4,300,310.3z"/>
+    					<circle class="st1" cx="280.5" cy="285.8" r="7.2"/>
+    					<circle class="st1" cx="319.5" cy="285.7" r="7.2"/>
+    				</g>
+    			</svg>
+            </div>
+
+            <div class="center">
+                <div class="fecha  margin-auto small-padding text-white color-1 glow border-retro-1">
+                    <h3 class="margin-none pixel-font">4, 5 y 6 de Diciembre de 2020</h3>
+                </div>
+                <div class="relative">
+                    <i class="text-color-1">(iconos de redes de FontAwesome)</i>
+                </div>
+            </div>
+       
+            <div class="medium-padding"></div>
+            <div class="separador up-color-2"></div>
+        </div>
+
+        
+
+        <div class="relative full-width color-2 big-padding clear center">
+            <div class="margin-auto max-w-1200">
+                <h1 class="medium-margin small-padding titulo text-color-2 color-1 inline-block border-retro-1">Speakers</h1>
+                <div></div>
+                <div><img class="shadow" alt="Martin" src="https://raw.githubusercontent.com/PyAr/pyconar2018_template/master/2019/eventoL_template/keynote-martin.jpg" style="height:40%; margin-bottom:2px; margin-top:2px; width:70%"></div>
+            </div>
+        </div>
+        <div class="separador down-color-2"></div>    
+        
+        <div class="big-margin"></div>
+
+        <div class="separador up-color-f"></div>
+        <div class="relative full-width color-white big-padding center clear glow">
+            <div class="margin-auto max-w-800">
+                <h1 class="titulo text-color-1 inline-block">Título</h1>
+                <div class="columnas aling-l border-top border-color-1 small-padding list-color-1 cap-1">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    </p>   
+                <ul>
+                    <li>item de lista</li>
+                    <li>item de lista</li>
+                    <li>item de lista</li>
+                    <li>item de lista</li>
+                </ul>
+                </div>
+
+                <h2 class="subtitulo text-color-2">Subtitulo</h2>
+                <p class="bold text-color-1">coc@ac.python.org.ar</p>
+            </div>
+        </div>
+
+
+        <footer id="main-footer" class="center">
+            <div class="separador down-color-f"></div>
+            <div id="footer-icons" class="big-padding text-color-3">
+                <h3 class="subtitulo">Seguir PyConAr 2020!</h3>
+                <div class="sub-anim sub-escalar">
+                    <i>(iconos de redes de FontAwesome)</i>
+                </div>
+            </div>
+        </footer>
+        <div class="full-width color-2 text-color-3 small-padding center">
+            <a><i class="fa fa-github"></i>You have the power!</a>
+        </div>
+        
+    </div>
+    
+</body>
+</html>
