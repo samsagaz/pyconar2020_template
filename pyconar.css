@@ -586,8 +586,8 @@ body {
 .fill-1 {    fill: var(--c1);}
 .fill-white {    fill: #fff;}
 .fill-2 {fill: var(--c2);}
-.pixeles-f{ background-image: url("img/pixel-bgf.gif");background-size:160px;background-attachment: fixed}
-.pixeles-1{ background-image: url("img/pixel-bg1.gif");background-size:160px;background-attachment: fixed}
+.pixeles-f{ background-image: url("https://github.com/samsagaz/pyconar2020_template/raw/master/demo/img/pixel-bgf.gif");background-size:160px;background-attachment: fixed}
+.pixeles-1{ background-image: url("https://github.com/samsagaz/pyconar2020_template/raw/master/demo/img/pixel-bg1.gif");background-size:160px;background-attachment: fixed}
 
 .border-color-1 {    border-color: var(--c1) !important;}
 .border-color-2 {    border-color:var(--c2) !important;}
@@ -695,10 +695,13 @@ body{font-family: 'Roboto', sans-serif;}
     97% { transform: scaley(.01);}
 }
 
-#main-footer{position: relative;min-height: 100vh;background-image: url(img/pixel-rosario.png),url(img/bandera-pixel.gif);
+#main-footer{position: relative;min-height: 100vh;background-image: url(https://github.com/samsagaz/pyconar2020_template/raw/master/demo/img/pixel-rosario.png),url(https://github.com/samsagaz/pyconar2020_template/raw/master/demo/img/bandera-pixel.gif);
     background-size: 100%;background-attachment: fixed;background-position: bottom center;background-repeat: no-repeat;
 }
-#main-footer a{color:#FDD301}
+#main-footer a{
+    color:#4494d0;
+    font-size: 30px;
+}
 #footer-icons{
     display: inline-block;
     background: rgba(255,255,255,.7);
