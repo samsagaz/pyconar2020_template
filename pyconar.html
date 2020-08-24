@@ -56,7 +56,7 @@
     {% endblock %}
 </head>
 
-<body>
+<body class="text-color-3 pixeles-1">
     {% block navbar %}
     <!-- Fixed navbar -->
     <nav class="navbar navbar-default navbar-fixed-top color-1 glow">
@@ -68,11 +68,7 @@
                     <span class="icon-bar"></span>
                 </button>
                 <a class="pull-left" href="/">
-                    {% if EVENTOL_SETTINGS.logo_header %}
-                    <img class="img-responsive eventol-logo" src="{{ EVENTOL_SETTINGS.logo_header.url }}" alt="EventoL Logo">
-                    {% else %}
-                    <img class="img-responsive eventol-logo" src="{% static "manager/img/eventol-white.png" %}" alt="EventoL Logo">
-                    {% endif %}
+                    <img class="img-responsive eventol-logo" src="https://github.com/samsagaz/pyconar2020_template/raw/master/demo/img/pyar-logo.png" alt="EventoL Logo">
                 </a>
             </div>
             <div id="navbar" class="collapse navbar-collapse color-1 glow">
@@ -313,7 +309,7 @@
     </nav>
     {% endblock %}
 
-    <div class="container-fluid color-1">
+    <div class="container-fluid">
         {% if messages %}
         {% for message in messages %}
         <div class="alert alert-{% ifequal message.tags 'error' %}danger{% else %}{{ message.tags }}{% endifequal %} alert-dismissible text-center" role="alert">
@@ -329,7 +325,7 @@
             {% block content %}
             <div id="portada" class="pixeles-f relative">
 
-                <h2 class="text-color-3 center pixel-font grdnt2">12va conferencia Argentina de Python</h2>
+                <h2 class="text-color-3 center pixel-font grdnt2">Duodécima Conferencia Argentina de Python</h2>
 
                 <div id="logo">
                     <svg id="iso-bg" version="1.1" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
@@ -398,20 +394,22 @@
                 <div class="separador up-color-2"></div>
             </div>
 
+            <div class="relative full-width color-2 big-padding clear center">
+                <div class="margin-auto max-w-1200">
+                    <h1 class="medium-margin small-padding titulo text-color-2 color-1 inline-block border-retro-1">Speakers</h1>
+                    <!-- <div><img class="shadow" alt="Martin" src="https://raw.githubusercontent.com/PyAr/pyconar2018_template/master/2019/eventoL_template/keynote-martin.jpg" style="height:40%; margin-bottom:2px; margin-top:2px; width:70%"></div> -->
+                </div>
+            </div>
+            <div class="separador down-color-2"></div>
 
+            <div class="big-margin"></div>
 
-            <svg version="1.1" id="rio-bg" class="relative" class="full-width" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 1000 55.4">
-                <polygon class="fill-grdnt1" points="-1,-1 -1,55.4 671.1,5.3 1001,55.4 1001,-1 " />
-            </svg>
-
-
-
-            <div class="big-padding">
-                <div class="relative max-w-1200 margin-auto color-white big-padding medium-margin glow border-bottom border-color-2">
+            <div class="separador up-color-f"></div>
+            <div class="relative full-width color-white big-padding center clear glow">
+                <div class="margin-auto max-w-800">
                     <h2 class="center titulo text-color-1">Acerca del evento</h2>
                     <br>
                     <div class="columnas-2 left-align">
-                        <!--p><img alt="" src="includes/header.jpg" style="border-style:solid; border-width:0px; height:20%; margin:2px 20px; width:100%"></p-->
                         <p>La PyCon (Python Conference) es una convención anual para la discusión y promoción del lenguaje
                             de programación Python. Se originó en Estados Unidos pero hoy en día se realiza en ese país, en
                             Europa, España, Brasil, Inglaterra, Italia, China, y en otros treinta países.</p>
@@ -440,22 +438,28 @@
                     </div>
                 </div>
             </div>
+            <div class="separador down-color-f"></div>
 
-            <div class="triangle-up-color-2 relative"></div>
+            <div class="big-margin"></div>
+
+            <div class="separador up-color-2"></div>
+
             <div class="relative full-width color-2 big-padding clear center">
                 <div class="margin-auto max-w-1200">
-                    <h1 class="small-margin titulo text-color-1 inline-block">Speakers</h1>
-                    <!-- <div><img class="shadow" alt="Sheila" src="https://raw.githubusercontent.com/PyAr/pyconar2018_template/master/2019/eventoL_template/keynote-sheila.png" style="height:40%; margin-bottom:2px; margin-top:2px; width:70%"></div> -->
+                    <h1 class="medium-margin small-padding titulo text-color-2 color-1 inline-block border-retro-1">Varios</h1>
                     <!-- <div><img class="shadow" alt="Martin" src="https://raw.githubusercontent.com/PyAr/pyconar2018_template/master/2019/eventoL_template/keynote-martin.jpg" style="height:40%; margin-bottom:2px; margin-top:2px; width:70%"></div> -->
                 </div>
             </div>
-            <div class="triangle-down-color-e relative"></div>
+            <div class="separador down-color-2"></div>
 
-            <div class="relative margin-auto medium-padding color-white big-margin center glow border-bottom border-color-1">
-                <div class="well">
-                    <div class="row" style="text-align: center;">
-                        <h1 class="titulo text-color-2 inline-block">{% trans 'Talks and Workshops' %}</h1>
-                    </div>
+            <div class="big-margin"></div>
+
+            <div class="separador up-color-f"></div>
+
+            <div class="relative full-width color-white big-padding center clear glow">
+                <div class="margin-auto max-w-800">
+                    <h2 class="center titulo text-color-1">{% trans 'Talks and Workshops' %}</h2>
+
                     <div id="slick_charlas">
                         <!-- {% if activities %} -->
                         {% for activity in activities %}
@@ -512,32 +516,15 @@
                     </div>
                 </div>
             </div>
+            <div class="separador down-color-f"></div>
 
-            <div class="triangle-up-color-white relative"></div>
-            <div class="relative full-width color-white small-padding center clear glow">
-                <div class="margin-auto max-w-800">
-                    <h1 class="titulo text-color-1 inline-block">Te puede interesar...</h1>
-
-                    <div class="remeras">
-                        <h2 class="subtitulo text-color-2">Cosas</h2>
-                        <div class="center">
-                            <!-- <img src="https://lh3.googleusercontent.com/JtyyD6XatNuXLzN2u5g64dIfxYCzTAlnGnRHXx0GLYJDVG0-PA_yhCSPxGPsepaCpFp3QbPxRxndVBNZwfXXNgd7e9F9Kre7StTSOKqAOC3Jps-otwqDypu3I8w7=w740"> -->
-                        </div>
-                        <div>
-                            <!-- ¿Querés tu remera de PyConAr 2020? Completá <a href="http://bit.ly/remera-pyconar20">este formulario</a>
-                            <p>Es una remera calidad PREMIUM (algodón peinado premium, doble refuerzos en hombros, tapa costuras), en color azul marino. El costo de la remera es $620. Y hay un montón de talles para elegir!</p> -->
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-            <div class="triangle-down-color-white-reverse relative"></div>
             <div class="big-margin"></div>
 
-
-            <div class="triangle-up-color-white-2 relative"></div>
-            <div class="relative full-width color-white small-padding center clear glow">
+            <div class="separador up-color-2"></div>
+            <div class="relative full-width color-2 big-padding clear center">
+                <!-- <div class="margin-auto max-w-1200"> -->
                 <div class="margin-auto max-w-800">
+
                     <h1 class="titulo text-color-1 inline-block">Código de conducta</h1>
 
                     <div>
@@ -613,7 +600,7 @@
                                 Si un participante se comportara de forma que violase el Código de Conducta,
                                 los organizadores de la conferencia podrían tomar las medidas que ellos
                                 consideren adecuadas, incluyendo el apercibimiento o expulsión de la
-                                conferencia, sin derecho a reembolso.
+                                conferencia, sin derecho a réplica.
                             </p>
                         </div>
                     </div>
@@ -633,35 +620,17 @@
                     </div>
                 </div>
             </div>
-            <div class="triangle-down-color-white-reverse relative"></div>
-            <div class="big-margin"></div>
 
-            <!-- <div class="relative full-width big-padding center color-2">
-                <div class="margin-auto max-w-1200">
-                    <h1 class="titulo text-color-1 inline-block">Requerimientos para los talleres</h1>
-                    <div class="grid3">
-                        <div class="grid3__item">
-                            <h4>Taller #1</h4>
-                            <small>Día..</small>
-                            <p>Vas a necesitar:</p>
-                            <ul>
-                                <li>GIT <a href="https://www.atlassian.com/git/tutorials/install-git" target="_blank"></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
+            <div class="separador down-color-2"></div>
 
-            <div class="triangle-down-color-2 relative"></div>
-            <div class="triangle-up-color-white relative"></div>
-            <div class="relative full-width color-white small-padding center clear glow">
+            <!-- <div class="relative full-width color-white small-padding center clear glow">
                 <div class="margin-auto" style="max-width:1064px">
                     <h1 class="subtitulo text-color-1">Con el apoyo de:</h1>
                     <p>
                         <img alt="" src="https://sponsors.png" style="height:70%; margin-bottom:4px; margin-top:4px; width:90%">
                     </p>
                 </div>
-            </div>
+            </div> -->
 
 
         <!-- <div class="big-padding">
@@ -678,7 +647,6 @@
         </div> -->
 
         <footer id="main-footer" class="center">
-            <div class="separador down-color-f"></div>
             <div id="footer-icons" class="big-padding text-color-3">
                 <h3 class="subtitulo">Seguir PyConAr 2020!</h3>
                 <div class="sub-anim sub-escalar">
