@@ -389,26 +389,13 @@
                         <span id="cuenta-regresiva"></span>
                     </small>
                 </div>
-
                 <div class="medium-padding"></div>
-                <div class="separador up-color-2"></div>
+                <div class="separador up-color-1"></div>
             </div>
 
-            <div class="relative full-width color-2 big-padding clear center">
-                <div class="margin-auto max-w-1200">
-                    <h1 class="medium-margin small-padding titulo text-color-2 color-1 inline-block border-retro-1">Speakers</h1>
-                    <!-- <div><img class="shadow" alt="Martin" src="https://raw.githubusercontent.com/PyAr/pyconar2018_template/master/2019/eventoL_template/keynote-martin.jpg" style="height:40%; margin-bottom:2px; margin-top:2px; width:70%"></div> -->
-                </div>
-            </div>
-            <div class="separador down-color-2"></div>
-
-            <div class="big-margin"></div>
-
-            <div class="separador up-color-f"></div>
-            <div class="relative full-width color-white big-padding center clear glow">
-                <div class="margin-auto max-w-800">
-                    <h2 class="center titulo text-color-1">Acerca del evento</h2>
-                    <br>
+            <div class="relative full-width color-1 small-padding clear center">
+                <div class="margin-auto max-w-1200 text-color-2">
+                    <h1 class="medium-margin small-padding titulo text-color-1 color-2 inline-block border-retro-1">Acerca del evento</h1>
                     <div class="columnas-2 left-align">
                         <p>La PyCon (Python Conference) es una convención anual para la discusión y promoción del lenguaje
                             de programación Python. Se originó en Estados Unidos pero hoy en día se realiza en ese país, en
@@ -438,93 +425,96 @@
                     </div>
                 </div>
             </div>
-            <div class="separador down-color-f"></div>
-
-            <div class="big-margin"></div>
-
-            <div class="separador up-color-2"></div>
-
-            <div class="relative full-width color-2 big-padding clear center">
-                <div class="margin-auto max-w-1200">
-                    <h1 class="medium-margin small-padding titulo text-color-2 color-1 inline-block border-retro-1">Varios</h1>
-                    <!-- <div><img class="shadow" alt="Martin" src="https://raw.githubusercontent.com/PyAr/pyconar2018_template/master/2019/eventoL_template/keynote-martin.jpg" style="height:40%; margin-bottom:2px; margin-top:2px; width:70%"></div> -->
-                </div>
-            </div>
-            <div class="separador down-color-2"></div>
-
-            <div class="big-margin"></div>
-
+            <div class="separador down-color-1"></div>
+            <div class="medium-margin"></div>
+            
             <div class="separador up-color-f"></div>
-
-            <div class="relative full-width color-white big-padding center clear glow">
-                <div class="margin-auto max-w-800">
-                    <h2 class="center titulo text-color-1">{% trans 'Talks and Workshops' %}</h2>
-
-                    <div id="slick_charlas">
-                        <!-- {% if activities %} -->
-                        {% for activity in activities %}
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <a href='{% url "activity_detail" event.event_slug activity.id %}'>
-                                    {% if activity.image %}
-                                    <img src="{% cropped_thumbnail activity "cropping" %}" alt="{{ activity.title }}" width="100%" heigth="100%">
-                                    {% else %}
-                                    <img src="{% static "manager/img/charlas.png" %}" width="100%" alt="Charlas y Talleres">
-                                    {% endif %}
-                                </a>
-                            </div>
-                            <div class="col-sm-6">
-                                <a style='text-decoration: none;' href='{% url "activity_detail" event.event_slug activity.id %}'>
-                                    <h2>{{ activity.title }}</h2>
-                                </a>
-
-                                <p><strong>{{ activity.abstract }}</strong></p>
-
-                                <p>{{ activity.long_description }}</p>
-
-                                <p><strong>{% trans 'Speakers' %}:</strong> {{ activity.speakers_names|title }}</p>
-                            </div>
-                        </div>
-                        {% endfor %}
-                        <!-- {% else %}
-                        <div class="row">
-                            <div class="col-sm-6 col-md-6 col-lg-6" style="padding-top: 30px;">
-                                <img src="{% static "manager/img/charlas.png" %}" width="100%" alt="Charlas y Talleres">
-                            </div>
-                            <div class="col-sm-6 col-md-6 col-lg-6">
-                                <h2>Charlas y Talleres</h2>
-
-                                <p><strong>Durante todo el día, para que puedas aprender y descubrir más sobre el Software
-                                        Libre</strong></p>
-
-                                <p>A lo largo de la jornada, se llevarán a cabo diversas charlas y talleres para todo tipo
-                                    de público. No es necesario que sepas algo de informática para asistir al FLISoL. Hay
-                                    charlas tanto para principiantes como para entusiastas y expertos.</p>
-
-                                <p>Algunos de los temas propuestos son: Introducción a GNU/Linux, Filosofía del Software
-                                    Libre, Recomendaciones para Migrar, Comunidades, Presentación y utilización de algunas
-                                    de las principales aplicaciones (paquete de ofimática, navegador web, editor de
-                                    imágenes, etc.), Experiencias con Software Libre en Educación, Conocimiento Libre,
-                                    Licencias, Construcción Colaborativa de Conocimiento, Software Libre y Trabajo, Hardware
-                                    Libre, Investigación, Edición Multimedia con aplicaciones libres, Imagen y Sonido.</p>
-
-                                <p>Además, si tenés algo que contar y querés dar una charla, vos también podés formar parte.
-                                    {% comment %} <a href="{% url "activity_proposal" event_slug event_uid %}">Envianos tu propuesta!</a></p> {% endcomment %}
-                            </div>
-                        </div>
-                        {% endif %} -->
+            <div class="relative full-width color-white small-padding center clear">
+                <div class="margin-auto max-w-1200">
+                    <h1 class="titulo text-color-1 inline-block">Primer Edición Virtual</h1>
+                    <br>
+                    <div>
+                        <p>Este año se realizará la primer edición virtual de la PyCon Argentina y esto resulta en un gran desafío tanto para la organización como para speakers y sponsors.</p>
+                        <p>Decidimos optar por un cronograma más espaciado en el tiempo, para evitar jornadas intensivas en las que la audiencia tenga que pasar mucho tiempo enfrente de una pantalla. Como ya mencionamos, la PyCon durará dos semanas y cada día habrá cuatro charlas de media hora (dos horas de charlas en total).</p>
+                        <p>Como entendemos que en este tipo de eventos la comunicación es crucial, elegimos dos herramientas para utilizar durante la conferencia que apuntan a tener canales de comunicación claros, fluidos y fáciles de usar.</p>
+                        <h2 class="subtitulo text-color-1">Discord</h2>
+                        <p>Discord es una aplicación de chat que también permite hacer videollamadas y streaming de video. Vamos a tener un servidor exclusivo para la PyCon en el cual habrá distintas salas de chat (en Discord se llaman “canales”), cada una con un propósito específico.</p>
+                        <p>Habrá un canal para cada charla en donde se podrán seguir las discusiones relacionadas a tópicos específicos, otro canal hará las veces de hall en donde todos los participantes podrán interactuar entre sí de manera informal, por mencionar algunos.</p>
+                        <p>Esta herramienta está disponible para todas las plataformas.</p>
+                        <h2 class="subtitulo text-color-1">YouTube Live</h2>
+                        <p>Las charlas oficiales de la conferencia serán transmitidas por YouTube Live, por ser el medio más utilizado para transmisión en vivo, disponible también en todas las plataformas y que permite dejar grabadas las charlas dadas durante la conferencia.</p>
+                        <p>Si querés saber más consulta nuestras FAQs sobre el evento</p>
                     </div>
                 </div>
             </div>
             <div class="separador down-color-f"></div>
+            <div class="medium-padding"></div>
+    
+            <div class="separador up-color-2"></div>
+            <div class="relative full-width color-2 small-padding clear center glow">
+                <div class="margin-auto max-w-1200">
+                    <h1 class="medium-margin small-padding titulo text-color-2 color-1 inline-block border-retro-1">Call for Charlas</h1>
+                    <p>¿Querés proponer una charla? Tenés tiempo hasta el 15 de septiembre.</p>
+                    <p>Asegurate de haber leído nuestras FAQs para conocer más sobre el formato de las charlas!</p>
+                </div>
+            </div>
+            <div class="separador down-color-2"></div>
+            <div class="big-margin"></div>
 
+
+
+            <div class="separador up-color-f"></div>
+            <div class="relative full-width color-white big-padding clear center">
+                <div class="margin-auto max-w-800">
+                    <h1 class="titulo text-color-1 inline-block">FAQ</h1>
+
+                    <h2 class="subtitulo text-color-1">¿Como van a ser las charlas virtuales?</h2>
+                        <p>Para poder asegurar la calidad de las ediciones pasadas las charlas van a ser grabadas previamente, editadas y transmitidas por YouTube Live durante el evento . A su vez, cada charla tendrá un canal exclusivo en Discord en donde el disertante podrá responder preguntas y continuar discusiones con posterioridad al evento.</p>
+                        <p>A cada charla le corresponde un slot de 30 minutos en total. Siendo que el video de la charla no debe superar los 20 minutos de duración.</p>
+                        
+                        <h2 class="subtitulo text-color-1">¿Qué tengo que tener en cuenta para esta edición virtual?</h2>
+                        <p>Por empezar las propuestas a charlas deben cargarse para su evaluación en: Quiero proponer una charla o taller en PyConAr2020</p>
+                        <p>La fecha límite de envío de propuestas de charlas es el 31 de agosto inclusive.</p>
+                        <p>La misma debe tener los siguientes datos:</p>
+                        <br>- Título
+                        <br>- Sumario: Un párrafo, como para ser incluido en el programa de charlas
+                        <br>- Descripción de la charla: Uno o dos párrafos que expliquen no tan brevemente el contenido de la presentación, para su evaluación.
+                        <br>- Autore(s): Nombre y apellido, breve descripción, foto, asociación, organismo, o empresa a la que pertenece, si corresponde.
+                        <br>- Tiempo estimado de duración: Las charlas generalmente son de 20 minutos. En caso de que sea mayor o menor el tiempo requerido solicitamos su justificación.
+                        <br>- Nivel objetivo de la charla: introductorio / intermedio / avanzado
+                        <br>- Tipo de público: Avanzado / Intermedio / Principiante / Docentes / Público en general.
+                        <br>- Conocimientos previos: Especificar qué conocimientos previos se deberán tener para seguir sin problemas la charla.
+                        <br>- Tags: web, GUI, databases, frameworks, ORM, IDE, ciencia, educación, juegos, comunidad, etc.
+                        <br>- Teléfono del autor/es (para poder comunicarnos)
+                        <br>- Ciudad de residencia del autor/es.
+                        <br>- El envío de presentaciones debe tener alguno de los siguientes formatos:
+                        <br>- OpenDocument (Openoffice.org / LibreOffice)
+                        <br>- HTML standard
+                        <br>- PostScript
+                        <br>- PDF
+                        <br>- Texto plano
+
+                        <p>Una vez finalizado el período del envío de propuestas se realizará una selección de las charlas disponibles.
+                        <p>A los disertantes seleccionados, antes de recibir la grabación definitiva, les vamos a pedir un mini video de 1 o 2 minutos para verificar la calidad de grabación</p>
+                        <p>Una vez seleccionadas las charlas y realizada la prueba del mini video van a poder trabajar en la grabación definitiva de la charla.</p>
+                        <p>Ya que cada video lleva un trabajo de edición en donde se incluirán logos o anuncios de sponsors e información sobre el evento, es de suma importancia que se respeten los plazos establecidos para evitar imprevistos en la organización y tener el tiempo suficiente de hacer una edición de la calidad que la PyCon amerita.</p>
+                        <p>También es importante especificar una licencia que permita que la presentación pueda ser descargada del sitio web de PyAr. Se recomienda Creative Commons o similares.</p>
+                        <p>Durante la conferencia, los speakers deberán estar online al momento de transmisión de la charla para poder responder las preguntas generadas.</p>
+                        <p>Planificamos un protocolo que podrán revisar si son seleccionados como speaker de la conferencia y los organizadores estaremos disponibles para cualquier consulta o ayuda que necesiten.</p>
+                        <h2 class="subtitulo text-color-1">¿Y los talleres?</h2>
+                        <p>Los talleres serán transmitidos mediante YouTube Live y la interacción será mediante Discord.</p>
+                        <p>El espacio dedicado a los talleres será los días sábados por la mañana, aunque al disponer de dos semanas para toda la conferencia, este puede adaptarse a las propuestas de quienes dicten el taller. Siempre y cuando estos no se superpongan con los slots de charlas, el resto del espacio de la conferencia estará dedicado a actividades como los talleres o sprints.</p>
+                        <h2>¿Puedo proponer alguna actividad que no esté especificada acá?</h2>
+                        <p>¿Tenes una idea y querés compartirla? ¿Querés dar un taller o proponer una actividad para la PyCon? ¡Escribinos a charlas@python.org.ar con tu propuesta.</p>
+                    </div>
+                </div>            
+            </div>            
+            <div class="separador down-color-f"></div>
             <div class="big-margin"></div>
 
             <div class="separador up-color-2"></div>
             <div class="relative full-width color-2 big-padding clear center">
-                <!-- <div class="margin-auto max-w-1200"> -->
                 <div class="margin-auto max-w-800">
-
                     <h1 class="titulo text-color-1 inline-block">Código de conducta</h1>
 
                     <div>
@@ -622,6 +612,85 @@
             </div>
 
             <div class="separador down-color-2"></div>
+            
+
+
+            <!-- <div class="separador up-color-2"></div>
+            <div class="relative full-width color-2 big-padding clear center">
+                <div class="margin-auto max-w-1200">
+                    <h1 class="medium-margin small-padding titulo text-color-2 color-1 inline-block border-retro-1">Varios</h1>
+                    <div><img class="shadow" alt="Martin" src="https://raw.githubusercontent.com/PyAr/pyconar2018_template/master/2019/eventoL_template/keynote-martin.jpg" style="height:40%; margin-bottom:2px; margin-top:2px; width:70%"></div>
+                </div>
+            </div>
+            <div class="separador down-color-2"></div>
+            <div class="medium-margin"></div> -->
+
+
+            <!-- <div class="separador up-color-f"></div>
+            <div class="relative full-width color-white big-padding center clear glow">
+                <div class="margin-auto max-w-800">
+                    <h2 class="center titulo text-color-1">{% trans 'Talks and Workshops' %}</h2>
+
+                    <div id="slick_charlas">
+                        {% if activities %}
+                        {% for activity in activities %}
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <a href='{% url "activity_detail" event.event_slug activity.id %}'>
+                                    {% if activity.image %}
+                                    <img src="{% cropped_thumbnail activity "cropping" %}" alt="{{ activity.title }}" width="100%" heigth="100%">
+                                    {% else %}
+                                    <img src="{% static "manager/img/charlas.png" %}" width="100%" alt="Charlas y Talleres">
+                                    {% endif %}
+                                </a>
+                            </div>
+                            <div class="col-sm-6">
+                                <a style='text-decoration: none;' href='{% url "activity_detail" event.event_slug activity.id %}'>
+                                    <h2>{{ activity.title }}</h2>
+                                </a>
+
+                                <p><strong>{{ activity.abstract }}</strong></p>
+
+                                <p>{{ activity.long_description }}</p>
+
+                                <p><strong>{% trans 'Speakers' %}:</strong> {{ activity.speakers_names|title }}</p>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        {% else %}
+                        <div class="row">
+                            <div class="col-sm-6 col-md-6 col-lg-6" style="padding-top: 30px;">
+                                <img src="{% static "manager/img/charlas.png" %}" width="100%" alt="Charlas y Talleres">
+                            </div>
+                            <div class="col-sm-6 col-md-6 col-lg-6">
+                                <h2>Charlas y Talleres</h2>
+
+                                <p><strong>Durante todo el día, para que puedas aprender y descubrir más sobre el Software
+                                        Libre</strong></p>
+
+                                <p>A lo largo de la jornada, se llevarán a cabo diversas charlas y talleres para todo tipo
+                                    de público. No es necesario que sepas algo de informática para asistir al FLISoL. Hay
+                                    charlas tanto para principiantes como para entusiastas y expertos.</p>
+
+                                <p>Algunos de los temas propuestos son: Introducción a GNU/Linux, Filosofía del Software
+                                    Libre, Recomendaciones para Migrar, Comunidades, Presentación y utilización de algunas
+                                    de las principales aplicaciones (paquete de ofimática, navegador web, editor de
+                                    imágenes, etc.), Experiencias con Software Libre en Educación, Conocimiento Libre,
+                                    Licencias, Construcción Colaborativa de Conocimiento, Software Libre y Trabajo, Hardware
+                                    Libre, Investigación, Edición Multimedia con aplicaciones libres, Imagen y Sonido.</p>
+
+                                <p>Además, si tenés algo que contar y querés dar una charla, vos también podés formar parte.
+                                    {% comment %} <a href="{% url "activity_proposal" event_slug event_uid %}">Envianos tu propuesta!</a></p> {% endcomment %}
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="separador down-color-f"></div>
+            <div class="medium-margin"></div> -->
+
+
 
             <!-- <div class="relative full-width color-white small-padding center clear glow">
                 <div class="margin-auto" style="max-width:1064px">
