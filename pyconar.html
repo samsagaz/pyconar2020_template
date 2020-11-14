@@ -1,3 +1,4 @@
+
 {% load staticfiles %}
 {% load filters %}
 {% load i18n %}
@@ -425,8 +426,8 @@
             </div>
             <div class="separador down-color-2"></div>
             <div class="medium-padding"></div>
-
             <div class="separador up-color-f"></div>
+
             <div class="relative full-width color-white small-padding center clear">
                 <div class="margin-auto max-w-1200">
                     <h1 class="titulo text-color-1 inline-block">Primer Edición Virtual</h1>
@@ -447,21 +448,95 @@
             </div>
             <div class="separador down-color-f"></div>
             <div class="medium-padding"></div>
-
             <div class="separador up-color-2"></div>
-            <div class="relative full-width color-2 small-padding clear center">
-                <div class="margin-auto max-w-1200">
-                    <h1 class="medium-margin small-padding titulo text-color-2 color-1 inline-block border-retro-1">Call for Charlas</h1>
-                    <p>¿Querés proponer una charla? Tenés tiempo hasta el 15 de septiembre.</p>
-                    <p>Asegurate de haber leído nuestras FAQs para conocer más sobre el formato de las charlas!</p>
-                    <p><a href="https://eventos.python.org.ar/events/pyconar2020/activity/proposal/">Y LUEGO APLICÁ</a></p>
+
+            <div class="relative full-width color-2 clear center">
+                <div class="relative color-2 center">
+                    <div class="row" style="text-align: center;">
+                        <h1 class="medium-margin small-padding titulo text-color-2 color-1 inline-block border-retro-1">Keynote</h1>
+                    </div>
+                    <div class="row">
+                        <img class="keynote" src="https://github.com/samsagaz/pyconar2020_template/raw/master/demo/img/keynote_1.jpg">
+                    </div>
+                    <div class="row">&nbsp;</div>
+                    <div class="row">
+                        <img class="keynote" src="https://github.com/samsagaz/pyconar2020_template/raw/master/demo/img/keynote_2.jpg">
+                    </div>
                 </div>
             </div>
             <div class="separador down-color-2"></div>
+            <div class="medium-padding"></div>
+            <div class="separador up-color-f"></div>
 
+            <div class="relative full-width color-white small-padding clear center">
+                <div class="relative color-white center">
+                    <div class="row" style="text-align: center;">
+                        <h1 class="medium-margin small-padding titulo text-white color-1 inline-block border-retro-1">Charlas</h1>
+                    </div>
+                    <div class="color-white">
+                        <div id="slick_charlas">
+                            {% for activity in activities %}
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <a href='{% url "activity_detail" event.event_slug activity.id %}'>
+                                        {% if activity.image %}
+                                        <img src="{% cropped_thumbnail activity "cropping" %}" alt="{{ activity.title }}" width="100%" heigth="100%">
+                                        {% else %}
+                                        <img src="{% static "manager/img/charlas.png" %}" width="100%" alt="Charlas y Talleres">
+                                        {% endif %}
+                                    </a>
+                                    </div>
+                                <div class="col-sm-6">
+                                    <a style='text-decoration: none;' href='{% url "activity_detail" event.event_slug activity.id %}'>
+                                        <h2>{{ activity.title }}</h2>
+                                    </a>
+                                    <p><strong>{{ activity.abstract }}</strong></p>
+
+                                    <p><strong>{% trans 'Speakers' %}:</strong> {{ activity.speakers_names|title }}</p>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="separador down-color-f"></div>
             <div class="medium-padding"></div>
 
+
+            <div class="separador up-color-2"></div>
+            <div class="relative full-width color-2 small-padding center clear">
+                <div class="margin-auto max-w-1200">
+                    <h1 class="titulo text-color-1 inline-block">FORMULARIOS DE INSCRIPCIÓN</h1>
+                    <br>
+                    <div class="row">
+                        <h2 class="subtitulo text-color-1">Charlas Relámpago</h2>
+                        <p>https://forms.gle/4z8h9AUFXVVz9mwB7</p>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <h2 class="subtitulo text-color-1">Speed Interview</h2>
+                        <p>https://forms.gle/FQqLtTruRCMhJ6mJA</p>
+                    </div>
+                </div>
+            </div>
+            <div class="separador down-color-2"></div>
+            <div class="medium-padding"></div>
             <div class="separador up-color-f"></div>
+
+            <div class="relative full-width color-f small-padding center clear">
+                <div class="margin-auto max-w-1200">
+                    <h1 class="titulo text-color-1 inline-block">SPONSORS</h1>
+                    <br>
+                    <div class="row">
+                        <img class="sponsors" src="https://github.com/samsagaz/pyconar2020_template/raw/master/sponsors.png">
+                    </div>
+                </div>
+            </div>
+            <div class="separador down-color-f"></div>
+            <div class="medium-padding"></div>
+
+            <div class="separador up-color-2"></div>
             <div class="relative full-width color-white small-padding center clear">
                 <div class="margin-auto max-w-1200">
                     <h1 class="titulo text-color-1 inline-block">FAQ</h1>
@@ -476,25 +551,25 @@
                         <p>La <strong class="text-color-1">fecha límite</strong> de envío de propuestas de charlas es el <strong class="text-color-1">15 de septiembre</strong> inclusive.</p>
                         <p>La misma debe tener los siguientes datos:</p>
                         <ul>
-                        <li> Título</li>
-                        <li>Sumario: Un párrafo, como para ser incluido en el programa de charlas</li>
-                        <li>Descripción de la charla: Uno o dos párrafos que expliquen no tan brevemente el contenido de la presentación, para su evaluación.</li>
-                        <li>Autore(s): Nombre y apellido, breve descripción, foto, asociación, organismo, o empresa a la que pertenece, si corresponde.</li>
-                        <li>Tiempo estimado de duración: Las charlas generalmente son de 20 minutos. En caso de que sea mayor o menor el tiempo requerido solicitamos su justificación.</li>
-                        <li>Nivel objetivo de la charla: introductorio / intermedio / avanzado</li>
-                        <li>Tipo de público: Avanzado / Intermedio / Principiante / Docentes / Público en general.</li>
-                        <li>Conocimientos previos: Especificar qué conocimientos previos se deberán tener para seguir sin problemas la charla.</li>
-                        <li>Tags: web, GUI, databases, frameworks, ORM, IDE, ciencia, educación, juegos, comunidad, etc.</li>
-                        <li>Teléfono del autor/es (para poder comunicarnos)</li>
-                        <li>Ciudad de residencia del autor/es.</li>
+                            <li>Título</li>
+                            <li>Sumario: Un párrafo, como para ser incluido en el programa de charlas</li>
+                            <li>Descripción de la charla: Uno o dos párrafos que expliquen no tan brevemente el contenido de la presentación, para su evaluación.</li>
+                            <li>Autore(s): Nombre y apellido, breve descripción, foto, asociación, organismo, o empresa a la que pertenece, si corresponde.</li>
+                            <li>Tiempo estimado de duración: Las charlas generalmente son de 20 minutos. En caso de que sea mayor o menor el tiempo requerido solicitamos su justificación.</li>
+                            <li>Nivel objetivo de la charla: introductorio / intermedio / avanzado</li>
+                            <li>Tipo de público: Avanzado / Intermedio / Principiante / Docentes / Público en general.</li>
+                            <li>Conocimientos previos: Especificar qué conocimientos previos se deberán tener para seguir sin problemas la charla.</li>
+                            <li>Tags: web, GUI, databases, frameworks, ORM, IDE, ciencia, educación, juegos, comunidad, etc.</li>
+                            <li>Teléfono del autor/es (para poder comunicarnos)</li>
+                            <li>Ciudad de residencia del autor/es.</li>
                         </ul>
-                        <p>El envío de presentaciones debe tener alguno de los siguientes <strong class="text-color-1">formatos</strong>:</p>
-                        </ul>
-                        <li>OpenDocument (Openoffice.org / LibreOffice)</li>
-                        <li>HTML standard</li>
-                        <li>PostScript</li>
-                        <li>PDF</li>
-                        <li>Texto plano</li>
+                        <ul>
+                            <p>El envío de presentaciones debe tener alguno de los siguientes <strong class="text-color-1">formatos</strong>:</p>
+                            <li>OpenDocument (Openoffice.org / LibreOffice)</li>
+                            <li>HTML standard</li>
+                            <li>PostScript</li>
+                            <li>PDF</li>
+                            <li>Texto plano</li>
                         </ul>
 
                         <p>Una vez finalizado el período del envío de propuestas se realizará una selección de las charlas disponibles.
@@ -512,12 +587,12 @@
                     </div>
                 </div>
             </div>
-            <div class="separador down-color-f"></div>
+            <div class="separador down-color-2"></div>
             <div class="medium-padding"></div>
-
             <div class="separador up-color-f"></div>
-            <div class="relative full-width color-white small-padding center clear">
-                <div class="margin-auto max-w-1200">
+
+            <div class="relative full-width color-f small-padding center clear">
+                <div class="margin-auto max-w-1200 columnas-2">
                     <h1 class="titulo text-color-1 inline-block">Código de conducta</h1>
 
                     <div>
@@ -614,6 +689,7 @@
                 </div>
             </div>
         </div>
+
         <footer id="main-footer" class="center">
             <div class="separador down-color-f"></div>
             
@@ -686,10 +762,10 @@
         });
 
         var ahora = new Date();
-        if (ahora < new Date(2020, 11, 16)) {
-            var dias = Math.round((new Date(2020, 11, 16) - new Date()) / (1000 * 60 * 60 * 24)) + 1;
+        if (ahora < new Date(2020, 10, 16)) {
+            var dias = Math.round((new Date(2020, 10, 16) - new Date()) / (1000 * 60 * 60 * 24)) + 1;
             $('#cuenta-regresiva').html('Faltan ' + dias + ' días')
-        } else if (ahora < new Date(2020, 11, 27)) {
+        } else if (ahora < new Date(2020, 10, 27)) {
             $('#cuenta-regresiva').html('¡Es ahora!')
         } else {
             $('#cuenta-regresiva').html('Te esperamos en la próxima')
