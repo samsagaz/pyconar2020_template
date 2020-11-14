@@ -724,3 +724,37 @@ body{font-family: 'Roboto', sans-serif;}
 body {overflow: hidden;  overflow-y: scroll;margin: 0;padding:0;}
 body>.container, body>.container-fluid {    padding: 0;    margin-top: 60px;}
 .eventol-logo{border-radius:5px}
+
+#logo{max-height:450px}
+#portada h2{line-height:.8em;padding-bottom:10px}
+div.relative.full-width.color-2,div.relative.full-width.color-1,div.relative.full-width.color-white{padding:40px 20px 60px}
+h1.titulo{margin-bottom:40px}
+#cuenta-regresiva{font-family:"VT323";font-size: 38pt;letter-spacing:2px;font-weight:400;color:var(--c1)}
+img{max-width:95%;height:auto}
+.keynote{max-width:750px;box-shadow:0 0 50px 0 #fff;margin:20px 0;width:100%}
+.columnas-2{padding:20px 0;-webkit-column-gap:100px;-moz-column-gap:100px;column-gap:100px}
+.columnas-2 p,.columnas-2 li{break-inside:avoid-column;text-align:left}
+p{font-weight:400}
+.color-2 p,.color-2 li{background:#fff;display:inline;padding:2px 0;box-shadow:0 4px 0 4px #fff;color:var(--c1)}
+.color-2 ul{padding:0;text-indent:0;break-inside:avoid-column;margin:10px 0 0}
+.color-2 li:before{content:"";display:inline-block;margin-right:10px;border:5px solid var(--c1)}
+.color-2 li:nth-child(odd):before{border:5px solid var(--c2)}
+.color-2 p:before,.color-2 p:after,.color-2 li:after{content:"";display:block}
+.color-2 p:before,.color-2 p:after{margin:20px}
+.color-2 .subtitulo{margin:40px 0 10px;line-height:.9em}
+/*slider*/
+.slick-prev:before,.slick-next:before{width:50px;height:50px;color:var(--c1)!important;font-size:40pt!important;opacity:.4!important;transition:opacity .4s}
+.slick-prev:hover:before,.slick-next:hover:before{opacity:1!important}
+.slick-prev{left:-5px!important;z-index:1}
+.slick-next{right:25px!important}
+.slick-slide p{text-align:left}
+.slick-slide .col-sm-6{max-width:500px;float:none;display:inline-block;vertical-align:middle}
+.slick-slide h2{display:inline;padding:2px 0;background:var(--c1);color:#fff;line-height: 1.4em}
+.slick-slide:nth-child(odd) h2{background:var(--c2)}
+.slick-slide h2:after{content:"";display:block;margin:20px}
+.slick-slide .col-sm-6 img{border:5px solid var(--c1);margin-bottom:10px}
+.slick-slide:nth-child(odd) .col-sm-6 img{border:5px solid var(--c2)}
+.slick-dots li button:before{color:transparent!important;background:var(--c1)}
+.slick-dots li:nth-child(odd) button:before{background:var(--c2)}
+.slick-dots{position:relative}
+.slick-slide .col-sm-6 > p:not(:nth-child(2)):not(:last-child){display:none}
